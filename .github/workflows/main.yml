@@ -1,0 +1,33 @@
+name: CI/CD for Static Page
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to the 'main' branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js (optional if using build tools)
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies (optional if using npm)
+        run: |
+          npm install
+
+      - name: Build (optional if you have a build step, like with React, Vue, etc.)
+        run: |
+          npm run build  # Skip this if you're just hosting static files
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./  # Publish the root directory (use ./dist if using a build folder)
